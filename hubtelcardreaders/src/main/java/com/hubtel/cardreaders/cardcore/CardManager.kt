@@ -1,4 +1,4 @@
-package com.hubtel.cardreaders.CardCore
+package com.hubtel.cardreaders.cardcore
 
 import android.app.Activity
 import com.hubtel.cardreaders.CardDelegates.CardPaymentProcessDelegate
@@ -23,7 +23,10 @@ class CardManager(var _environment: ProviderMode,
 
 
 
+
+    var transactionProcessDetails: TransactionProcessDetails?=null
     var paymentProcess: TransactionProcess? = null
+    var transaction: Transaction? =null
     var cardDetails: CPdetails?=null
 
     fun  startCardTransaction(){
@@ -68,17 +71,20 @@ class CardManager(var _environment: ProviderMode,
 
               override fun onDccSelectionRequired(p0: TransactionProcess?, p1: Transaction?, p2: DccInformation?) {
                   paymentProcess = p0
-                  cardProcessDelegate.onDccSelectionRequired(p0,p1,p2)
+                  transaction = p1
+                  cardProcessDelegate.onDccSelectionRequired()
               }
 
               override fun onRegistered(p0: TransactionProcess?, p1: Transaction?) {
                   paymentProcess = p0
-                  cardProcessDelegate.onRegistered(p0,p1)
+                  transaction = p1
+                  cardProcessDelegate.onRegistered()
               }
 
               override fun onCustomerSignatureRequired(p0: TransactionProcess?, p1: Transaction?) {
                   paymentProcess = p0
-                  cardProcessDelegate.onCustomerSignatureRequired(p0,p1)
+                  transaction = p1
+                  cardProcessDelegate.onCustomerSignatureRequired()
 
 
               }
@@ -86,22 +92,25 @@ class CardManager(var _environment: ProviderMode,
               override fun onCustomerVerificationRequired(p0: TransactionProcess?, p1: Transaction?) {
                   p0?.continueWithCustomerIdentityVerified(false)
                   paymentProcess = p0
-                  cardProcessDelegate.onCustomerVerificationRequired(p0,p1)
+                  transaction = p1
+                  cardProcessDelegate.onCustomerVerificationRequired()
               }
 
               override fun onApplicationSelectionRequired(p0: TransactionProcess?, p1: Transaction?, p2: MutableList<ApplicationInformation>?) {
 
 
                   paymentProcess = p0
+                  transaction = p1
                   p0?.continueWithSelectedApplication(p2?.get(0))
-                  cardProcessDelegate.onApplicationSelectionRequired(p0,p1,p2)
+                  cardProcessDelegate.onApplicationSelectionRequired()
 
               }
 
               override fun onCompleted(p0: TransactionProcess?, p1: Transaction?, p2: TransactionProcessDetails?) {
 
                   paymentProcess = p0
-
+                  transaction = p1
+                  transactionProcessDetails = p2
 
                   when(p2?.state ){
 
