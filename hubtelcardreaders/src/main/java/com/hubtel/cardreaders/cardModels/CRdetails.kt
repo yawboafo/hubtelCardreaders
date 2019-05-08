@@ -1,4 +1,4 @@
-package com.hubtel.cardreaders.CardModels
+package com.hubtel.cardreaders.cardModels
 
 data class CPdetails(var schema: String,
                      var cardNumber: String,

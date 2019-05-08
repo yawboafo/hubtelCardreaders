@@ -1,4 +1,4 @@
-package com.hubtel.cardreaders.CardDelegates
+package com.hubtel.cardreaders.cardDelegates
 
 interface CardConnectionDelegates {
 

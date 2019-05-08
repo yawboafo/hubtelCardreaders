@@ -1,14 +1,13 @@
-package com.hubtel.cardreaders.CardDelegates
+package com.hubtel.cardreaders.cardDelegates
 
-import com.hubtel.cardreaders.CardModels.CPdetails
+import com.hubtel.cardreaders.cardModels.CPdetails
 import com.hubtel.cardreaders.cardcore.CPStatus
-import io.mpos.transactions.CardDetails
 
 
 interface  CardPaymentProcessDelegate {
 
 
-    fun cannotStartCardTransaction(message: String?)
+
     fun onStatusChanged(status: String)
     fun onDccSelectionRequired()
     fun onRegistered()

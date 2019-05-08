@@ -1,13 +1,13 @@
 package com.hubtel.cardreaders.cardcore
 
 
+import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
-import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.hubtel.cardreaders.CardModels.CardReader
+import com.hubtel.cardreaders.cardModels.CardReader
 import java.io.IOException
 import java.lang.Exception
 
@@ -24,15 +24,19 @@ class CardConnectionManager()  {
     }
 
 
-    fun EnableBluetooth(){
-        if (bluetoothAdapter?.isEnabled == false) {
 
-        }
+
+
+
+
+
+    fun openBlueToothSettings(context: Activity){
+
+
+
+        context.startActivity( Intent(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS))
+
     }
-
-
-
-
 
     fun getConnectedCardReader(): String {
 
@@ -70,7 +74,7 @@ class CardConnectionManager()  {
 
         }
 
-       // connectDevice(listOfCardReaders.get(0))
+
 
     }
 
@@ -122,6 +126,7 @@ class CardConnectionManager()  {
         fun cancel() {
             try {
                 mmSocket?.close()
+
             } catch (e: IOException) {
                 Log.e("Debug", "Could not close the client socket", e)
             }

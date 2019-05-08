@@ -1,7 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-group ='com.github.yawboafo'
-apply plugin: 'com.github.dcendents.android-maven'
 
 android {
     compileSdkVersion 28

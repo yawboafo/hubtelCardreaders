@@ -2,12 +2,11 @@ package com.hubtel.aposcardreaders
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import com.hubtel.cardreaders.CardDelegates.CardConnectionDelegates
-import com.hubtel.cardreaders.CardDelegates.CardPaymentProcessDelegate
-import com.hubtel.cardreaders.CardModels.CPdetails
+import com.hubtel.cardreaders.cardDelegates.CardConnectionDelegates
+import com.hubtel.cardreaders.cardDelegates.CardPaymentProcessDelegate
+import com.hubtel.cardreaders.cardModels.CPdetails
 import com.hubtel.cardreaders.cardcore.CPEnvironment
 import com.hubtel.cardreaders.cardcore.CPStatus
 import com.hubtel.cardreaders.cardcore.CardConnectionManager
@@ -24,12 +23,13 @@ class MainActivity : AppCompatActivity() , CardConnectionDelegates,CardPaymentPr
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        txt = findViewById(R.id.txtview) as TextView
-        button = findViewById(R.id.button) as Button
-      var cardManager = CardConnectionManager()
+        txt = findViewById<TextView>(R.id.txtview)
+        button = findViewById<Button>(R.id.button)
+        button2 = findViewById<Button>(R.id.button2)
+        var cardManager = CardConnectionManager()
 
         //cardManager.findDevices()
-        txt.setText(cardManager.getConnectedCardReader())
+        txt.text = cardManager.getConnectedCardReader()
 
          cardPM = CardManager(CPEnvironment.LIVE,"edaad8b6-71ef-470b-b4e7-6be80858c744","A2IfLgu7G9GqwMxjCqrAKAk4ubPmKfWR","ab501271-80a0-4462-b29b-1f35fb6a61aa",this@MainActivity,this@MainActivity)
 
@@ -44,6 +44,8 @@ class MainActivity : AppCompatActivity() , CardConnectionDelegates,CardPaymentPr
         button2.setOnClickListener {
 
 
+
+            cardManager.openBlueToothSettings(this@MainActivity)
         }
 
     }
@@ -67,14 +69,12 @@ class MainActivity : AppCompatActivity() , CardConnectionDelegates,CardPaymentPr
     * */
 
 
-    override fun cannotStartCardTransaction(message: String?) {
-    }
+
 
     override fun onStatusChanged(status: String) {
 
 
-
-        txt.setText(status)
+        txt.text = status
 
 
     }
@@ -98,9 +98,9 @@ class MainActivity : AppCompatActivity() , CardConnectionDelegates,CardPaymentPr
     override fun onCardPaymentCompleted(status: CPStatus, cardDetails: CPdetails) {
 
 
-        var txt = findViewById(R.id.txtview) as TextView
+        var txt = findViewById<TextView>(R.id.txtview)
 
-        txt.setText("Payment completion status : " +status.name + "  \n\n   Card Details :   " + cardDetails.toString())
+        txt.text = "Payment completion status : " +status.name + "  \n\n   Card Details :   " + cardDetails.toString()
 
 
     }

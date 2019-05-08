@@ -1,9 +1,8 @@
 package com.hubtel.cardreaders.cardcore
 
-import android.app.Activity
 import android.content.Context
-import com.hubtel.cardreaders.CardDelegates.CardPaymentProcessDelegate
-import com.hubtel.cardreaders.CardModels.CPdetails
+import com.hubtel.cardreaders.cardDelegates.CardPaymentProcessDelegate
+import com.hubtel.cardreaders.cardModels.CPdetails
 import io.mpos.Mpos
 import io.mpos.accessories.AccessoryFamily
 import io.mpos.accessories.parameters.AccessoryParameters
@@ -53,23 +52,23 @@ class CardManager(var _environment: CPEnvironment,
 
 
         if (activity == null) {
-            cardProcessDelegate.cannotStartCardTransaction("Context cannot be empty")
+            cardProcessDelegate.onCardPaymentCompleted(CPStatus.ContextNull,cardDetails)
             return
         }
 
         if(_merchantIdentifier.isBlank()){
-            cardProcessDelegate.cannotStartCardTransaction("Merchant identifier is required")
+            cardProcessDelegate.onCardPaymentCompleted(CPStatus.MerchantIDNull,cardDetails)
             return
         }
 
 
         if(_merchantSecreteKey.isBlank()){
-            cardProcessDelegate.cannotStartCardTransaction("Merchant SecretKey  is required")
+            cardProcessDelegate.onCardPaymentCompleted(CPStatus.MerchantSecretKeyNull,cardDetails)
             return
         }
 
         if(_sessionID.isBlank()){
-            cardProcessDelegate.cannotStartCardTransaction("Session ID  is required")
+            cardProcessDelegate.onCardPaymentCompleted(CPStatus.SessionIDNull,cardDetails)
             return
         }
 
