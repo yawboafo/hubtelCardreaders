@@ -1,6 +1,8 @@
 package com.hubtel.cardreaders.CardDelegates
 
+import com.hubtel.cardreaders.CardModels.CPdetails
 import com.hubtel.cardreaders.cardcore.CPStatus
+import io.mpos.transactions.CardDetails
 
 
 interface  CardPaymentProcessDelegate {
@@ -13,6 +15,6 @@ interface  CardPaymentProcessDelegate {
     fun onCustomerSignatureRequired()
     fun onCustomerVerificationRequired()
     fun onApplicationSelectionRequired()
-    fun onCardPaymentCompleted(status: CPStatus)
+    fun onCardPaymentCompleted(status: CPStatus,cardDetails: CPdetails)
 
 }

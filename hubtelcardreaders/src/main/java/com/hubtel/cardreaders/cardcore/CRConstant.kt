@@ -11,6 +11,7 @@ class CPConstant {
         var transactionProcessDetails: TransactionProcessDetails?=null
         var paymentProcess: TransactionProcess? = null
         var transaction: Transaction? =null
+        val UUID = java.util.UUID.fromString("00001101-0000-1000-8000-00805f9b34fb")
     }
 
 }

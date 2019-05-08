@@ -1,6 +1,7 @@
 package com.hubtel.cardreaders.cardcore
 
 import android.app.Activity
+import android.content.Context
 import com.hubtel.cardreaders.CardDelegates.CardPaymentProcessDelegate
 import com.hubtel.cardreaders.CardModels.CPdetails
 import io.mpos.Mpos
@@ -14,12 +15,14 @@ import io.mpos.transactions.Transaction
 import io.mpos.transactions.receipts.ReceiptLineItemKey
 
 
-class CardManager(var _environment: ProviderMode,
-                  var _merchantIdentifier: String = "",
-                  var _merchantSecreteKey: String = "",
-                  var _sessionID: String = "",
-                  var activity: Activity,
+class CardManager(var _environment: CPEnvironment,
+                  var _merchantIdentifier: String ,
+                  var _merchantSecreteKey: String,
+                  var _sessionID: String ,
+                  var activity: Context,
                   var cardProcessDelegate: CardPaymentProcessDelegate){
+
+
 
 
 
@@ -27,7 +30,22 @@ class CardManager(var _environment: ProviderMode,
     var transactionProcessDetails: TransactionProcessDetails?=null
     var paymentProcess: TransactionProcess? = null
     var transaction: Transaction? =null
-    var cardDetails: CPdetails?=null
+     var cardDetails: CPdetails
+    //cardDetails =  CPdetails(schema,cardNo,terminalID,auth,merchantID,transID)
+    init {
+        cardDetails =  CPdetails("","","","","","")
+    }
+
+    fun getEnvironment(type: CPEnvironment) : ProviderMode {
+
+
+        when(type){
+
+            CPEnvironment.LIVE -> return  ProviderMode.LIVE
+            CPEnvironment.TEST -> return  ProviderMode.TEST
+            CPEnvironment.MOCK -> return  ProviderMode.MOCK
+        }
+    }
 
     fun  startCardTransaction(){
 
@@ -59,7 +77,7 @@ class CardManager(var _environment: ProviderMode,
 
 
 
-          val  provider = Mpos.createTransactionProvider(activity,_environment,_merchantIdentifier,_merchantSecreteKey)
+          val  provider = Mpos.createTransactionProvider(activity,getEnvironment(_environment),_merchantIdentifier,_merchantSecreteKey)
           val accessoryParameters = AccessoryParameters.Builder(AccessoryFamily.MIURA_MPI)
               .bluetooth().build()
 
@@ -90,10 +108,11 @@ class CardManager(var _environment: ProviderMode,
               }
 
               override fun onCustomerVerificationRequired(p0: TransactionProcess?, p1: Transaction?) {
-                  p0?.continueWithCustomerIdentityVerified(false)
                   paymentProcess = p0
                   transaction = p1
-                  cardProcessDelegate.onCustomerVerificationRequired()
+                  p0?.continueWithCustomerIdentityVerified(false)
+
+                 // cardProcessDelegate.onCustomerVerificationRequired()
               }
 
               override fun onApplicationSelectionRequired(p0: TransactionProcess?, p1: Transaction?, p2: MutableList<ApplicationInformation>?) {
@@ -102,7 +121,7 @@ class CardManager(var _environment: ProviderMode,
                   paymentProcess = p0
                   transaction = p1
                   p0?.continueWithSelectedApplication(p2?.get(0))
-                  cardProcessDelegate.onApplicationSelectionRequired()
+                 // cardProcessDelegate.onApplicationSelectionRequired()
 
               }
 
@@ -111,15 +130,6 @@ class CardManager(var _environment: ProviderMode,
                   paymentProcess = p0
                   transaction = p1
                   transactionProcessDetails = p2
-
-                  when(p2?.state ){
-
-                      TransactionProcessDetailsState.ABORTED -> cardProcessDelegate.onCardPaymentCompleted(CPStatus.Aborted)
-                      TransactionProcessDetailsState.APPROVED -> cardProcessDelegate.onCardPaymentCompleted(CPStatus.Approved)
-                      TransactionProcessDetailsState.FAILED -> cardProcessDelegate.onCardPaymentCompleted(CPStatus.Failed)
-                      TransactionProcessDetailsState.INCONCLUSIVE -> cardProcessDelegate.onCardPaymentCompleted(CPStatus.Inconclusive)
-                      TransactionProcessDetailsState.DECLINED -> cardProcessDelegate.onCardPaymentCompleted(CPStatus.Declined)
-                  }
 
 
                   if(p1 !=null){
@@ -131,6 +141,18 @@ class CardManager(var _environment: ProviderMode,
                       var auth =  p1.customerReceipt.getReceiptLineItem(ReceiptLineItemKey.CLEARING_DETAILS_AUTHORIZATION_CODE).value
                       cardDetails =  CPdetails(schema,cardNo,terminalID,auth,merchantID,transID)
                   }
+
+                  when(p2?.state ){
+
+                      TransactionProcessDetailsState.ABORTED -> cardProcessDelegate.onCardPaymentCompleted(CPStatus.Aborted,cardDetails)
+                      TransactionProcessDetailsState.APPROVED -> cardProcessDelegate.onCardPaymentCompleted(CPStatus.Approved,cardDetails)
+                      TransactionProcessDetailsState.FAILED -> cardProcessDelegate.onCardPaymentCompleted(CPStatus.Failed,cardDetails)
+                      TransactionProcessDetailsState.INCONCLUSIVE -> cardProcessDelegate.onCardPaymentCompleted(CPStatus.Inconclusive,cardDetails)
+                      TransactionProcessDetailsState.DECLINED -> cardProcessDelegate.onCardPaymentCompleted(CPStatus.Declined,cardDetails)
+                  }
+
+
+
 
 
                   //cardProcessDelegate.onCompleted(p0,p1,p2)
