@@ -83,7 +83,7 @@ class CardConnectionManager()  {
         val pairedDevices: Set<BluetoothDevice>? = bluetoothAdapter?.bondedDevices
 
         if(!pairedDevices.isNullOrEmpty()){
-            val device = pairedDevices?.filter { it.address == reader.macAdd }?.first()
+            val device = pairedDevices.filter { it.address == reader.macAdd }.first()
 
             Log.d("debug","device name "+ device.name)
 

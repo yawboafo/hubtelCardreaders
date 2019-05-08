@@ -44,6 +44,7 @@ class CardManager(var _environment: CPEnvironment,
             CPEnvironment.LIVE -> return  ProviderMode.LIVE
             CPEnvironment.TEST -> return  ProviderMode.TEST
             CPEnvironment.MOCK -> return  ProviderMode.MOCK
+            null ->  return   ProviderMode.TEST
         }
     }
 
@@ -149,6 +150,20 @@ class CardManager(var _environment: CPEnvironment,
                       TransactionProcessDetailsState.FAILED -> cardProcessDelegate.onCardPaymentCompleted(CPStatus.Failed,cardDetails)
                       TransactionProcessDetailsState.INCONCLUSIVE -> cardProcessDelegate.onCardPaymentCompleted(CPStatus.Inconclusive,cardDetails)
                       TransactionProcessDetailsState.DECLINED -> cardProcessDelegate.onCardPaymentCompleted(CPStatus.Declined,cardDetails)
+                      TransactionProcessDetailsState.CREATED ->  cardProcessDelegate.onCardPaymentCompleted(CPStatus.CREATED,cardDetails)
+                      TransactionProcessDetailsState.CONNECTING_TO_ACCESSORY -> cardProcessDelegate.onCardPaymentCompleted(CPStatus.CONNECTING_TO_ACCESSORY,cardDetails)
+                      TransactionProcessDetailsState.PREPARING -> cardProcessDelegate.onCardPaymentCompleted(CPStatus.PREPARING,cardDetails)
+                      TransactionProcessDetailsState.INITIALIZING_TRANSACTION -> cardProcessDelegate.onCardPaymentCompleted(CPStatus.INITIALIZING_TRANSACTION,cardDetails)
+                      TransactionProcessDetailsState.WAITING_FOR_CARD_PRESENTATION -> cardProcessDelegate.onCardPaymentCompleted(CPStatus.WAITING_FOR_CARD_PRESENTATION,cardDetails)
+                      TransactionProcessDetailsState.WAITING_FOR_CARD_DATA_INPUT -> cardProcessDelegate.onCardPaymentCompleted(CPStatus.WAITING_FOR_CARD_DATA_INPUT,cardDetails)
+                      TransactionProcessDetailsState.WAITING_FOR_ADDRESS_INPUT -> cardProcessDelegate.onCardPaymentCompleted(CPStatus.WAITING_FOR_ADDRESS_INPUT,cardDetails)
+                      TransactionProcessDetailsState.WAITING_FOR_VERIFICATION_DATA_CONFIRMATION -> cardProcessDelegate.onCardPaymentCompleted(CPStatus.WAITING_FOR_VERIFICATION_DATA_CONFIRMATION,cardDetails)
+                      TransactionProcessDetailsState.WAITING_FOR_CARD_REMOVAL ->  cardProcessDelegate.onCardPaymentCompleted(CPStatus.WAITING_FOR_CARD_REMOVAL,cardDetails)
+                      TransactionProcessDetailsState.PROCESSING ->  cardProcessDelegate.onCardPaymentCompleted(CPStatus.PROCESSING,cardDetails)
+                      TransactionProcessDetailsState.ACCEPTED -> cardProcessDelegate.onCardPaymentCompleted(CPStatus.ACCEPTED,cardDetails)
+                      TransactionProcessDetailsState.NOT_REFUNDABLE -> cardProcessDelegate.onCardPaymentCompleted(CPStatus.NOT_REFUNDABLE,cardDetails)
+                      TransactionProcessDetailsState.WAITING_FOR_SCAN -> cardProcessDelegate.onCardPaymentCompleted(CPStatus.WAITING_FOR_SCAN,cardDetails)
+                      null ->cardProcessDelegate.onCardPaymentCompleted(CPStatus.NULL_STATE,cardDetails)
                   }
 
 
