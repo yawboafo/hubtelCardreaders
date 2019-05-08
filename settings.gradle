@@ -1,1 +1,1 @@
-include ':app', ':hubtelcardreaders'
+include ':hubtelcardreaders'

@@ -30,8 +30,9 @@ class CardManager(var _environment: CPEnvironment,
     var transactionProcessDetails: TransactionProcessDetails?=null
     var paymentProcess: TransactionProcess? = null
     var transaction: Transaction? =null
-     var cardDetails: CPdetails
-    //cardDetails =  CPdetails(schema,cardNo,terminalID,auth,merchantID,transID)
+    var cardDetails: CPdetails
+
+
     init {
         cardDetails =  CPdetails("","","","","","")
     }
@@ -172,7 +173,7 @@ class CardManager(var _environment: CPEnvironment,
              paymentProcess?.requestAbort()
         }
     }
-    fun  cardDetails() : CPdetails?{
+    private fun  cardDetails() : CPdetails?{
 
 
 

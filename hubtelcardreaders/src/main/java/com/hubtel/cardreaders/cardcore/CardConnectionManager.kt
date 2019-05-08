@@ -11,7 +11,7 @@ import com.hubtel.cardreaders.CardModels.CardReader
 import java.io.IOException
 import java.lang.Exception
 
-class CardConnectionManager(var context: Context)  {
+class CardConnectionManager()  {
 
 
 
@@ -41,7 +41,7 @@ class CardConnectionManager(var context: Context)  {
 
         if(listOfCardReaders.isNullOrEmpty())
 
-            return  "Card reader not connected"
+            return  "Not connected"
              else
         return  listOfCardReaders.get(0).name
     }
